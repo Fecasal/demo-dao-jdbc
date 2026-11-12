@@ -50,14 +50,14 @@ public class SellerDaoJDBC implements SellerDao{
 					+ "WHERE seller.Id = ?");
 			
 			st.setInt(1, id);
-			rs = st.executeQuery();
-			if (rs.next()) {
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId"));
-				dep.setName(rs.getString("DepName"));
-				Seller obj = new Seller();
-				obj.setId(rs.getInt("Id"));
-				obj.setName(rs.getString("Name"));
+			rs = st.executeQuery();									//um resultSet traz os dados na forma de tabela, um objeto com linhas e colunas 
+			if (rs.next()) {										//a nossa classe DAO é responsável por pegar pegar esses dados do banco de dados 
+				Department dep = new Department();					//relacional que o resultSet traz e transformar em objetos associados
+				dep.setId(rs.getInt("DepartmentId"));				//como é feito no bloco ao lado, criando um seller associado ao department, porque é necessário transformar a tabela do resultSet em objetos para ter na memória do computador
+				dep.setName(rs.getString("DepName"));				// Quando se executa uma consulta SQL e o resultado vai para o resultSet, esse resultSet aponta para a posição 0, que não contém objeto, somente na posição 1 que contém
+				Seller obj = new Seller();							// por isso é importante colocar o if(rs.next()), para testar se veio algum resultado, se a consulta não retornou nenhum registro o rs.next() retorna falso, e aí pula o if e retorna nulo, como no código
+ 				obj.setId(rs.getInt("Id"));							// agora se deu verdadeiro é porque retornou uma tabela no resultSet com os dados 
+				obj.setName(rs.getString("Name"));					// então é possível instanciar o objeto do vendedor associado ao seu departamento, como é feito dentro do bloco if(rs.next()) 
 				obj.setEmail(rs.getString("Email"));
 				obj.setBaseSalary(rs.getDouble("BaseSalary"));
 				obj.setBirthDate(rs.getDate("BirthDate"));
